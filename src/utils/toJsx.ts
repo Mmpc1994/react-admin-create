@@ -7,25 +7,23 @@ import { toInput, toSelect } from './formBuilder'
  * 生成文件的头部部分
  * 如导入必要的组件
  */
-export function toAheadImport(componentsName: string[]): string {
+export function toAheadImport(componentsName: string[]): Promise<string> {
     let template = `
         import react from 'react'; \n
         import withRouter from 'umi/withRouter'; \n
         import ${ componentsName } from 'antd'; \n
 
     `
-    return template
+    return Promise.resolve(template)
 }
 
 /**
  * 对一些特殊的组件做处理
  * 如导入了Form组件 需要从中取得FormItem
  */
-export function toComponentChild(componentsName: string[], template: string):string {
+export function toComponentChild(componentsName: string[], template: string): Promise<string> {
     if (componentsName.includes('Form')) {
         template += `
-            \n
-            \n
             const FormItem = Form.item; \n
         `
     }
@@ -35,14 +33,12 @@ export function toComponentChild(componentsName: string[], template: string):str
         `
     }
     
-    return template
+    return Promise.resolve(template)
 
 }
 
-export function toReactComponent(name: string, template: string): string {
+export function toReactComponent(name: string, template: string): Promise<string> {
     template += `
-        \n
-        \n
         export class ${name}Component extends React.Component { \n
             constuctor() { \n
                 super(); \n
@@ -51,18 +47,27 @@ export function toReactComponent(name: string, template: string): string {
 
     `
 
-    return template
+    return Promise.resolve(template)
 }
 
-export function toReactComponentEnd(template: string): string {
-    template += `
-        \n
-
-    `
-    return template
-}
 
 export function toTableJsx(columns: IColumn[], template: string) {
+    let components = [];
+}
+
+export function toSearchFormJsx(fields: IField[], name: string = 'test'): Promise<string> {
+    const components: string[] = []
+    fields.forEach(field => {
+        if (components.includes(field.type)) return
+        components.push(field.type)
+    });
+    return toAheadImport(components).then(template => {
+        return toComponentChild(components, template).then(template => {
+            return toReactComponent(name, template).then(template => {
+                return toSearchFormRenderJsx(fields, template);
+            })
+        })
+    })
 
 }
 

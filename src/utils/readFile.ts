@@ -91,12 +91,3 @@ export function modelToSearch(Model: IContentConstructor): IField[] {
     })
     return formItems
 }
-
-/**
- * 如何生成一个react.js 文件
- * 
- */
-
- export function toReactJsx() {
-
- }
