@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { DECORATORS_NAME } from '../constant';
-import { IContentConstructor, IColumn } from '../interface';
+import { IContentConstructor, IColumn, IField } from '../interface';
 
 console.log(__dirname);
 console.log(process.cwd());
@@ -73,12 +73,30 @@ export function modelToTable(Model: IContentConstructor): IColumn[] {
  * 
  * @param Model 
  * 通过Search 装饰器获取相关配置
+ * 
  */
-export function modelToSearch(Model: IContentConstructor) {
+export function modelToSearch(Model: IContentConstructor): IField[] {
     const model = new Model();
+    const formItems: IField[] = [];
     Object.keys(model).forEach(key => {
         if (Reflect.hasMetadata('options', model, key)) {
             const options = Reflect.getMetadata('options', model,key)
+            formItems.push({
+                label: options.label,
+                type: options.type,
+                required: options.required,
+                key: key,
+            })
         }
     })
+    return formItems
 }
+
+/**
+ * 如何生成一个react.js 文件
+ * 
+ */
+
+ export function toReactJsx() {
+
+ }
