@@ -9,9 +9,9 @@ import { toInput, toSelect } from './formBuilder'
  */
 export function toAheadImport(componentsName: string[]): Promise<string> {
     let template = `
-        import react from 'react'; \n
-        import withRouter from 'umi/withRouter'; \n
-        import ${ componentsName } from 'antd'; \n
+        import react from 'react'; 
+        import withRouter from 'umi/withRouter'; 
+        import ${ componentsName } from 'antd'; 
 
     `
     return Promise.resolve(template)
@@ -24,7 +24,7 @@ export function toAheadImport(componentsName: string[]): Promise<string> {
 export function toComponentChild(componentsName: string[], template: string): Promise<string> {
     if (componentsName.includes('Form')) {
         template += `
-            const FormItem = Form.item; \n
+            const FormItem = Form.item; 
         `
     }
     if (componentsName.includes('Select')) {
@@ -39,10 +39,10 @@ export function toComponentChild(componentsName: string[], template: string): Pr
 
 export function toReactComponent(name: string, template: string): Promise<string> {
     template += `
-        export class ${name}Component extends React.Component { \n
-            constuctor() { \n
-                super(); \n
-                this.state = {}; \n
+        export class ${name}Component extends React.Component { 
+            constuctor() { 
+                super(); 
+                this.state = {}; 
             }
 
     `
@@ -86,18 +86,18 @@ export function toSearchFormRenderJsx(fields: IField[], template: string): strin
     
     template += `
         render() {
-            const { getFieldDecorator } = this.props.form; \n
-            return ( \n
-                <Form layout="inline" className="search-form"> \n
+            const { getFieldDecorator } = this.props.form; 
+            return ( 
+                <Form layout="inline" className="search-form"> 
                     ${FormItemTemplate}
 
-                    <FormItem className="search-buttons"> \n 
-                        <Button type='primary' onClick={this.handleSearch}>查询</Button> \n
-                        <Button onClick={this.handleExport}  style={{marginLeft: 20}}> \n
-                            <Icon type="upload" />批量导出 \n
-                        </Button> \n
-                    </FormItem> \n
-                </Form> \n
+                    <FormItem className="search-buttons">  
+                        <Button type='primary' onClick={this.handleSearch}>查询</Button> 
+                        <Button onClick={this.handleExport}  style={{marginLeft: 20}}> 
+                            <Icon type="upload" />批量导出 
+                        </Button> 
+                    </FormItem> 
+                </Form> 
             )
         }
     `;
