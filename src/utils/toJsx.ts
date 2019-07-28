@@ -101,5 +101,5 @@ export function toSearchFormRenderJsx(fields: IField[], template: string): strin
             )
         }
     `;
-    return template
+    return template;
 }
