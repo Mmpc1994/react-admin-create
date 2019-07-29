@@ -2,33 +2,33 @@ import { IField } from './../interface';
 
 export function toInput(field: IField): string {
     return `
-        <FormItem label={${field.label}} className='search-form'> \n
-            { \n
-                getFieldDecorator('${field.key}', { \n
-                    initialValue: '', \n
-                    required: ${field.required} \n
-                }) ( \n
-                    <Input placeholder={${field.placeholder}} /> \n
-                ) \n
+                        <FormItem label={${field.label}} className='search-form'>
+                            {
+                                getFieldDecorator('${field.key}', {
+                                    initialValue: '',
+                                    required: ${field.required}
+                                }) (
+                                    <Input placeholder={${field.placeholder}} />
+                                )
 
-            }
-        </FormItem> \n
+                            }
+                        </FormItem>
     `
 }
 
 export function toSelect(field: IField): string {
     return `
-        <FormItem label={${field.label}} className='search-form'> \n
-            { \n
-                getFieldDecorator('${field.key}', { \n
-                    initialValue: '', \n
-                    required: ${field.required} \n
-                }) ( \n
-                    <Select placeholder={${field.placeholder}} > \n
-                        <Option value=''>请选择</Option>
-                    </Select>
-                ) \n
-            }
-        </FormItem> \n
+                        <FormItem label={${field.label}} className='search-form'>
+                            {
+                                getFieldDecorator('${field.key}', {
+                                    initialValue: '',
+                                    required: ${field.required}
+                                }) (
+                                    <Select placeholder={${field.placeholder}} >
+                                        <Option value=''>请选择</Option>
+                                    </Select>
+                                )
+                            }
+                        </FormItem>
     `
 }
