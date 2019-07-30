@@ -3,6 +3,8 @@ import { toSearchFormJsx } from './utils/toJsx';
 import 'reflect-metadata'
 
 
+
+process.env.NODE_ENV = 'dev';
 readFileToModel('./model/user.js').then(Model => {
     console.log(new Model);
     const columns = modelToTable(Model);

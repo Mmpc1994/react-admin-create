@@ -18,4 +18,4 @@
  * 2. 生成文件的位置
  * 3. 生成文件的名字, 可以从路径当中解析, 如果路径的最后不存在 , 作为生成的文件名
  */
-const argv = process.argv;
+// const argv = process.argv;

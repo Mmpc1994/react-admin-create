@@ -2,9 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { DECORATORS_NAME } from '../constant';
 import { IContentConstructor, IColumn, IField } from '../interface';
+import { exec } from './exec'
+import * as shelljs from 'shelljs'
 
-console.log(__dirname);
-console.log(process.cwd());
+// console.log(__dirname);
+// console.log(process.cwd());
 /**
  * 
  * @param pathStr 
@@ -24,18 +26,52 @@ export function readFileToModel(pathStr: string):Promise<IContentConstructor> {
                 if (err) {
                     reject(err)
                 }
+
+                // 要先对这个文件进行编译将.ts编译成.js
                 // 返回的值是一个
                 // {User: Function} 的结构, 这里就按照约定来了
-                const ModelWrap = require(path.resolve(__dirname, '../temp/model.ts'));
-                const key = Object.keys(ModelWrap)[0];
-                if (key) {
-                    resolve(ModelWrap[key]);
-                } else {
-                    console.log('请定义合理的实体类')
+                try {
+                    loadModel().then(Model => {
+                        resolve(Model)
+                    })
+                } catch (e) {
+                    throw e
                 }
             })
         })
     })
+}
+
+export function compileTsToJs():Promise<any> {
+    return exec(`tsc ${path.resolve(__dirname, '../temp/model.ts')} --experimentalDecorators`)
+}
+
+/**
+ * 判断是开发环境还是正式环境
+ */
+export function loadModel():Promise<IContentConstructor> {
+
+    if (process.env.NODE_ENV === 'dev') {
+        const ModelWrap = require(path.resolve(__dirname, '../temp/model.ts'));
+        const key = Object.keys(ModelWrap)[0];
+        if (key) {
+            return Promise.resolve(ModelWrap[key]);
+        } else {
+            throw new Error('请定义正确的实体类');
+        }
+    } else {
+        return compileTsToJs().then(res => {
+            if (res === 'done') {
+                const ModelWrap = require(path.resolve(__dirname, '../temp/model.js'));
+                console.log(ModelWrap)
+                const key = Object.keys(ModelWrap)[1];
+                if (key) {
+                    return Promise.resolve(ModelWrap[key]);
+                }
+                throw new Error('请定义正确的实体类');
+            }
+        })
+    }
 }
 
 export function injectDecorators() {

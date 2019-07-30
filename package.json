@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "create-table": "./bin/index.js"
+    "ac": "./dist/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^12.6.8",
+    "@types/shelljs": "^0.8.5",
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0",
+    "moment": "^2.24.0",
     "reflect-metadata": "^0.1.13",
+    "shelljs": "^0.8.3",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   }
