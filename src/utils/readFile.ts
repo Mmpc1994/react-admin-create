@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as shelljs from 'shelljs'
 import { DECORATORS_NAME } from '../constant';
 import { IContentConstructor, IColumn, IField } from '../interface';
 import { exec } from './exec'
-import * as shelljs from 'shelljs'
 
 // console.log(__dirname);
 // console.log(process.cwd());
