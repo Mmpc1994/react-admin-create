@@ -88,6 +88,10 @@ export function toSearchFormJsx(fields: IField[], name: string = 'test'): Promis
 
 }
 
+export function toTableRenderJsx(columns: IColumn[], template: string) : string {
+    
+}
+
 export function toSearchFormRenderJsx(fields: IField[], template: string): string {
     let FormItemTemplate = '';
     fields.forEach(field => {
@@ -100,7 +104,7 @@ export function toSearchFormRenderJsx(fields: IField[], template: string): strin
                 break
         }
     });
-    
+    // 最后一个大括号是为了闭合 toReactComponent 这个方法没有闭合的
     template += `
             render() {
                 const { getFieldDecorator } = this.props.form; 
@@ -117,6 +121,7 @@ export function toSearchFormRenderJsx(fields: IField[], template: string): strin
                     </Form> 
                 )
             }
+        }
     `;
     return template;
 }

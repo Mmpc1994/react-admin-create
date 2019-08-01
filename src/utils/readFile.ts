@@ -26,10 +26,6 @@ export function readFileToModel(pathStr: string):Promise<IContentConstructor> {
                 if (err) {
                     reject(err)
                 }
-
-                // 要先对这个文件进行编译将.ts编译成.js
-                // 返回的值是一个
-                // {User: Function} 的结构, 这里就按照约定来了
                 try {
                     loadModel().then(Model => {
                         resolve(Model)
@@ -42,6 +38,9 @@ export function readFileToModel(pathStr: string):Promise<IContentConstructor> {
     })
 }
 
+// 要先对这个文件进行编译将.ts编译成.js
+// 返回的值是一个
+// {User: Function} 的结构, 这里就按照约定来了
 export function compileTsToJs():Promise<any> {
     return exec(`tsc ${path.resolve(__dirname, '../temp/model.ts')} --experimentalDecorators`)
 }

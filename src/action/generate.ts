@@ -5,9 +5,11 @@ import * as fs from 'fs';
 import { log } from '../utils/log'
 import { readFileToModel, modelToTable, modelToSearch } from '../utils/readFile';
 import { toSearchFormJsx } from '../utils/toJsx';
-import { writeFile } from '../utils/writeFile'
+import { writeFile } from '../utils/writeFile';
+import { pathToComponentName } from '../utils/utils';
 
 
+// todo 是否生成style文件
 export function generateSearchForm(name: string, model: string, pathStr: string, options: any) {
     if (preCheck(name, model, pathStr)) {
         const MODEL_PATH = pathParse(model);
@@ -15,8 +17,9 @@ export function generateSearchForm(name: string, model: string, pathStr: string,
         readFileToModel(MODEL_PATH).then(Model => {
             const columns = modelToTable(Model);
             const fields = modelToSearch(Model);
-            toSearchFormJsx(fields).then(template => {
-                writeFile(CURRENT_PATH, template)
+            const name   = pathToComponentName(CURRENT_PATH);
+            toSearchFormJsx(fields, name).then(template => {
+                writeFile(CURRENT_PATH, template);
             })
         })
     }
