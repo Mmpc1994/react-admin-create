@@ -6,6 +6,6 @@ export interface IColumn {
     title: string;
     dataIndex: string;
     key: string;
-    render?: Function;
+    render?: any;
     fixed?: boolean | string
 }

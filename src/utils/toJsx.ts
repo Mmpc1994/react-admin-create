@@ -65,6 +65,16 @@ export function toSearchEventHandle(template: string): Promise<string> {
     return Promise.resolve(template)
 }
 
+export function toTableEventHandle(template: string): Promise<string> {
+    template += `
+            handleAdd = () => {
+
+            }
+    `
+
+    return Promise.resolve(template);
+}
+
 
 export function toTableJsx(columns: IColumn[], name: string = 'test') {
     let components = ['Card', 'Button', 'Table', 'Modal', 'Popconfirm'];
@@ -97,9 +107,9 @@ export function toTableRenderJsx(columnsOption: IColumn[], template: string) :st
         dataIndex: 'opt',
         key: 'opt',
         fixed: 'right',
-        render: (text: string, row: any, index: number) => {
+        render: `(text: string, row: any, index: number) => {
             return (
-                `
+                
                     <div>
                         <Button size="small" onClick={() => { this.handleEdit(text, row) }}>编辑</Button>
 
@@ -109,18 +119,20 @@ export function toTableRenderJsx(columnsOption: IColumn[], template: string) :st
                             <Button size="small" style={{marginLeft: 10, color: 'red'}}>删除</Button>
                         </Popconfirm>
                     </div>
-                `
             )
-        }
+        }`
     })
     template += `
             render()  {
                 let columns  = [${columnsOption.map(column => {
+                    let _fixedTemplate  = column.fixed ? `fixed: ${column.fixed},` : '';
+                    let _renderTemplate = column.render ? `render: ${column.render}` : ''
                     return `{
                         title: ${column.title},
                         dataIntex: ${column.dataIndex},
                         key: ${column.key},
-                        
+                        ${_fixedTemplate}
+                        ${_renderTemplate}
                     }`
                 })}];
                 
