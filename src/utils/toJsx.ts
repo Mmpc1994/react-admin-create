@@ -115,7 +115,14 @@ export function toTableRenderJsx(columnsOption: IColumn[], template: string) :st
     })
     template += `
             render()  {
-                let columns  = ${columnsOption};
+                let columns  = [${columnsOption.map(column => {
+                    return `{
+                        title: ${column.title},
+                        dataIntex: ${column.dataIndex},
+                        key: ${column.key},
+                        
+                    }`
+                })}];
                 
                 columns = columns.map(item => ({
                     ...item, 
