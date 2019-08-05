@@ -54,7 +54,7 @@ export function toSearchEventHandle(template: string): Promise<string> {
     template += `
             handleSearch = () => {
                 const searchInfo = this.props.form.getFieldsValue();
-                this.props.search(searchInfo)
+                this.props.search(searchInfo);
             }
 
             handleOutput = () => {
@@ -66,8 +66,11 @@ export function toSearchEventHandle(template: string): Promise<string> {
 }
 
 
-export function toTableJsx(columns: IColumn[], template: string) {
-    let components = [];
+export function toTableJsx(columns: IColumn[], name: string = 'test') {
+    let components = ['Card', 'Button', 'Table', 'Modal', 'Popconfirm'];
+    return toAheadImport(components).then(template => {
+        return toReactComponent(name, template)
+    })
 }
 
 export function toSearchFormJsx(fields: IField[], name: string = 'test'): Promise<string> {
@@ -88,7 +91,77 @@ export function toSearchFormJsx(fields: IField[], name: string = 'test'): Promis
 
 }
 
-export function toTableRenderJsx(columns: IColumn[], template: string) : string {
+export function toTableRenderJsx(columnsOption: IColumn[], template: string) :string {
+    columnsOption.push({
+        title: '操作',
+        dataIndex: 'opt',
+        key: 'opt',
+        fixed: 'right',
+        render: (text: string, row: any, index: number) => {
+            return (
+                `
+                    <div>
+                        <Button size="small" onClick={() => { this.handleEdit(text, row) }}>编辑</Button>
+
+                        <Popconfirm
+                            title="确定删除？"
+                            onConfirm={()=> this.handleDelete(row, index)}>
+                            <Button size="small" style={{marginLeft: 10, color: 'red'}}>删除</Button>
+                        </Popconfirm>
+                    </div>
+                `
+            )
+        }
+    })
+    template += `
+            render()  {
+                let columns  = ${columnsOption};
+                
+                columns = columns.map(item => ({
+                    ...item, 
+                    align: 'center'
+                }));
+
+                return (
+                    <div>
+                        <Card style={{marginBottom: -1, textAlign: 'right'}}>
+                            <Button type="primary" onClick={() => {
+                                this.handleAdd()
+                            }}>添加</Button>
+                        </Card>
+
+                        <div className="content-wrap">
+                            <Table
+                                rowKey='id'
+                                bordered
+                                columns={columns}
+                                dataSource={this.state.dataSource}
+                                onChange={this.onSearch}
+                                pagination={this.params}
+                                scroll={{ x: 'max-content'}}
+                            />
+                        </div>
+
+                        {
+                            this.state.isShowAdd && 
+                            <Modal
+                                title="新增用车差标"
+                                visible={this.state.isShowAdd}
+                                width={680}
+                                onOk={() => this.submit()}
+                                okText={this.state.submitName}
+                                onCancel={() => {
+                                    this.setState({
+                                        isShowAdd: false
+                                    })
+                            }}>
+                            </Modal>
+                        }
+                    </div>
+                )
+            }
+    `
+    return template
     
 }
 

@@ -7,5 +7,5 @@ export interface IColumn {
     dataIndex: string;
     key: string;
     render?: Function;
-    fixed?: boolean
+    fixed?: boolean | string
 }
