@@ -62,13 +62,31 @@ export function toSearchEventHandle(template: string): Promise<string> {
                 this.props.output(searchInfo);
             }
     `
-    return Promise.resolve(template)
+    return Promise.resolve(template);
 }
 
 export function toTableEventHandle(template: string): Promise<string> {
     template += `
             handleAdd = () => {
+                this.setState({
+                    isShowAdd: true
+                })
+            }
 
+            onSearch = (searchInfo = {}) => {
+
+            }
+
+            submit = () => {
+
+            }
+
+            handleDelete = () => {
+
+            }
+
+            handleEdit = () => {
+                
             }
     `
 
@@ -168,7 +186,6 @@ export function toTableRenderJsx(columnsOption: IColumn[], template: string) :st
                                 visible={this.state.isShowAdd}
                                 width={680}
                                 onOk={() => this.submit()}
-                                okText={this.state.submitName}
                                 onCancel={() => {
                                     this.setState({
                                         isShowAdd: false

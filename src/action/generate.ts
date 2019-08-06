@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 import { log } from '../utils/log'
 import { readFileToModel, modelToTable, modelToSearch } from '../utils/readFile';
-import { toSearchFormJsx } from '../utils/toJsx';
+import { toSearchFormJsx, toTableJsx } from '../utils/toJsx';
 import { writeFile } from '../utils/writeFile';
 import { pathToComponentName } from '../utils/utils';
 
@@ -23,6 +23,25 @@ export function generateSearchForm(name: string, model: string, pathStr: string,
             })
         })
     }
+}
+
+export function generateTable(name: string, model: string, pathStr: string, options: any) {
+    if (preCheck(name, model, pathStr)) {
+        const MODEL_PATH = pathParse(model);
+        const CURRENT_PATH = pathParse(pathStr);
+        readFileToModel(MODEL_PATH).then(Model => {
+            const columns = modelToTable(Model);
+            const fields = modelToSearch(Model);
+            const name   = pathToComponentName(CURRENT_PATH);
+            toTableJsx(columns, name).then(template => {
+                writeFile(CURRENT_PATH, template);
+            });
+        });
+    }
+}
+
+export function generateForm(name: string, model: string, pathStr: string, options: any) {
+    
 }
 
 /**

@@ -1,5 +1,5 @@
 
-        import react from 'react'; 
+        import React from 'react'; 
         import withRouter from 'umi/withRouter'; 
         import Input from 'antd'; 
 
@@ -25,7 +25,6 @@
                 const { getFieldDecorator } = this.props.form; 
                 return ( 
                     <Form layout="inline" className="search-form"> 
-                        
                         <FormItem label={手机号} className='search-form'>
                             {
                                 getFieldDecorator('phone', {
