@@ -65,7 +65,7 @@ export function toSearchEventHandle(template: string): Promise<string> {
     return Promise.resolve(template);
 }
 
-export function toTableEventHandle(template: string): Promise<string> {
+export function toTableEventHandle(template: string, name: string): Promise<string> {
     template += `
             handleAdd = () => {
                 this.setState({
@@ -81,12 +81,42 @@ export function toTableEventHandle(template: string): Promise<string> {
 
             }
 
-            handleDelete = () => {
+            handleDelete = async (record, index) => {
+                try {
+                    let response = await $service.${name}.remove.post({
+                        params: {
+                            id: record.id
+                        }
+                    });
+                    if (response.code === 0) {
+                        const { dataSource } = this.state;
+                        dataSource.splice(index, 1);
+                        this.setState({
+                            dataSource
+                        });
+                        this.params.total -= 1;
+                    }
 
+                } catch(e) {
+
+                }
             }
 
-            handleEdit = () => {
-                
+            handleEdit = async (record, index) => {
+                try {
+                    let response = await $service.${name}.getOverview.post({
+                        params: {
+                            id: record.id
+                        }
+                    });
+                    if (response.code === 0) {
+                        this.setState({
+                            isShowAdd: true
+                        })
+                    }
+                } catch (e) {
+
+                }
             }
     `
 
